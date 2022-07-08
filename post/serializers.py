@@ -7,7 +7,8 @@ from .models import (
     JobPost,
     Company,
     CompanyBusinessArea,
-    BusinessArea
+    BusinessArea,
+    
 )
 
 
@@ -77,3 +78,4 @@ class JobPostSkillSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobPostSkillSet
         fields = ('id', 'skill_set', 'job_post')
+

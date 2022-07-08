@@ -12,6 +12,10 @@ from .serializers import JobPostSerializer
 from django.db.models.query_utils import Q
 
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from user.serializers import UserPostSerializer
+
+
 class SkillView(APIView):
     permission_classes = [permissions.AllowAny]
 
@@ -67,3 +71,14 @@ class JobView(APIView):
             return Response(status=status.HTTP_200_OK)
 
         return Response(job_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ApplyView(APIView):
+    authentication_classes = [JWTAuthentication]
+    
+    def post(self, request):
+        request.data["user"] = request.user.id
+        user_post_serializer = UserPostSerializer(data=request.data)
+        user_post_serializer.is_valid(raise_exception=True)
+        user_post_serializer.save()
+        return Response(user_post_serializer.data, status=status.HTTP_200_OK)
+        
